@@ -10,7 +10,7 @@ on:
       - main
 
 jobs:
-  build_and_deploy_job:
+  dev_build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
@@ -32,6 +32,29 @@ jobs:
           api_location: "" # Api source code path - optional
           output_location: "dist" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
+
+  stg_build_and_deploy_job:
+    needs: dev_build_and_deploy_job
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    name: Deploy Staging
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+          lfs: false
+
+      - name: Build and Deploy Staging
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_STG }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+
+          app_location: "/"
+          api_location: "api"
+          output_location: "dist"          
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'

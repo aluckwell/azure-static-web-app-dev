@@ -1,0 +1,37 @@
+---
+import FeedbackForm from '../components/FeedbackForm.astro'
+---
+
+<h1>Feedback</h1>
+
+<FeedbackForm />
+
+<p id="result"></p>
+
+<script>
+  const form = document.querySelector('#feedback-form')
+  const result = document.querySelector('#result')
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault()
+
+    const formData = new FormData(form)
+
+    const payload = {
+      name: formData.get('name'),
+      feedback: formData.get('feedback')
+    }
+
+    const res = await fetch('/api/feedback', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+
+    const data = await res.json()
+
+    result.textContent = data.success ? 'Thanks!' : data.error
+  })
+</script>

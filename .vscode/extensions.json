@@ -1,4 +1,8 @@
 {
-  "recommendations": ["astro-build.astro-vscode", "unifiedjs.vscode-mdx"],
+  "recommendations": [
+    "ms-azuretools.vscode-azurefunctions",
+    "astro-build.astro-vscode",
+    "unifiedjs.vscode-mdx"
+  ],
   "unwantedRecommendations": []
 }
