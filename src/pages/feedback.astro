@@ -1,37 +1,71 @@
 ---
-import FeedbackForm from '../components/FeedbackForm.astro'
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import FeedbackForm from '../components/FeedbackForm.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 ---
 
-<h1>Feedback</h1>
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={`Feedback | ${SITE_TITLE}`}
+      description={SITE_DESCRIPTION}
+    />
+  </head>
+  <body>
+    <Header />
 
-<FeedbackForm />
+    <main>
+      <h1>Feedback</h1>
 
-<p id="result"></p>
+      <p>
+        I'd love to hear your thoughts, suggestions, bug reports, or general
+        feedback about the site.
+      </p>
 
-<script>
-  const form = document.querySelector('#feedback-form')
-  const result = document.querySelector('#result')
+      <FeedbackForm />
 
-  form?.addEventListener('submit', async (e) => {
-    e.preventDefault()
+      <p id="result"></p>
+    </main>
 
-    const formData = new FormData(form)
+    <Footer />
 
-    const payload = {
-      name: formData.get('name'),
-      feedback: formData.get('feedback')
-    }
+    <script>
+      const form = document.querySelector('#feedback-form');
+      const result = document.querySelector('#result');
 
-    const res = await fetch('/api/feedback', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    })
+      form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    const data = await res.json()
+        const formData = new FormData(form);
 
-    result.textContent = data.success ? 'Thanks!' : data.error
-  })
-</script>
+        const payload = {
+          name: formData.get('name'),
+          feedback: formData.get('feedback')
+        };
+
+        result.textContent = 'Sending...';
+
+        try {
+          const res = await fetch('/api/feedback', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+          });
+
+          const data = await res.json();
+
+          result.textContent = data.success
+            ? 'Thank you for your feedback!'
+            : data.error;
+        } catch {
+          result.textContent = 'Unable to send feedback.';
+        }
+      });
+    </script>
+  </body>
+</html>
