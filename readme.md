@@ -1,3 +1,4 @@
+[![Board Status](https://dev.azure.com/Andrewluckwell1990/f547ae4b-45eb-44c7-b05d-8f5830f1b04e/c2297221-1229-46ec-b0c4-4bac99aa8efc/_apis/work/boardbadge/aba2684c-de74-4090-8135-c9709b8ea62e)](https://dev.azure.com/Andrewluckwell1990/f547ae4b-45eb-44c7-b05d-8f5830f1b04e/_boards/board/t/c2297221-1229-46ec-b0c4-4bac99aa8efc/Microsoft.RequirementCategory)
 # Astro Starter Kit: Blog
 
 ```sh
